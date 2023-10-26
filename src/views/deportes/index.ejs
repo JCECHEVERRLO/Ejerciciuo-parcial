@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deportes list</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="alert alert-success text-center">deportes list</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">jugadores</th>
+                        
+                       
+                        </th>
+
+                    </thead>
+                    <tbody>
+                      <% deportes.forEach(deporte => { %>
+                        
+                      <tr>
+                        <th scope="row"><%= deporte.id %></th>
+                        <td><%= deporte.name %></td>
+                        <td><%= deporte.jugadores %></td>
+                       
+                      </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+      </div class="row">
+         <div class="col-12 d-grid">
+          <a href="/deportes/create"class="btn btn-outline-secondary">
+        create new deporte
+         </a>
+    </div>
+    
+  </div>
+ 
+  <table>
+    <!-- Encabezados de la tabla -->
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <!-- Otros encabezados -->
+        <th>Acciones</th>
+    </tr>
+    <!-- Filas de la tabla -->
+    <% deportes.forEach((registro) => { %>
+        <tr>
+            <td><%= registro.id %></td>
+            <td><%= registro.nombre %></td>
+            <!-- Otros datos -->
+            <td>
+                <a href="/generar-pdf/<%= registro.id %>" class="btn btn-primary">Descargar PDF</a>
+            </td>
+        </tr>
+    <% }); %>
+</table>
+
+<div class="container mt-4">
+    <h2>Listado de Registros</h2>
+  
+    <!-- Formulario de filtrado -->
+    <form action="/ruta-de-tu-aplicacion" method="get" class="form-inline mb-3">
+      <div class="form-group">
+        <label for="filtro">Filtrar por ID:</label>
+        <input type="text" id="filtro" name="id" class="form-control" placeholder="ID a filtrar">
+      </div>
+      <button type="submit" class="btn btn-primary ml-2">Filtrar</button>
+    </form>
+  
+    <!-- Mostrar la lista de registros aquí -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <!-- Agrega más columnas si es necesario -->
+        </tr>
+      </thead>
+      <tbody>
+        <% deportes.forEach(deporte => { %>
+          <tr>
+            <td><%= deporte.id %></td>
+            <td><%= deporte.nombre %></td>
+            <!-- Agrega más columnas si es necesario -->
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+</html>

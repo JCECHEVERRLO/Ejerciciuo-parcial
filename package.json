@@ -1,0 +1,20 @@
+{
+  "name": "deportesparcial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "boostrap": "^2.0.0",
+    "data": "^0.6.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1",
+    "pdfmake": "^0.2.7",
+    "uuid": "^9.0.1"
+  }
+}
