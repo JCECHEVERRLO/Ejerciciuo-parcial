@@ -2,11 +2,10 @@
 const express = require('express');
 const fs = require('fs');
 const {v4: uuidv4} = require('uuid');
-
+const ejs = require('ejs');
+const router = express.Router();
 const pdfMake = require('pdfmake');
-
-
-
+const {models} = require('./src/libs/sequelize');
 
 // Define tus 
  //Modulos internas
@@ -99,32 +98,34 @@ app.delete('/deportes/delete/:id', (req, res) =>{
     //leer contenido del archivo
     const deportes = readFile(FILE_NAME)
 
-    //BUSCAR LA MASCOTA CON EL ID QUE RECIBE
+    //BUSCAR  DEPORTE CON EL ID QUE RECIBE
     const deporteIndex = deportes.findIndex(deporte => deporte.id === id)
     if(deporteIndex < 0){
         res.status(404).json({'ok': false, message:"deporte not found"})
         return;
     }
-    //eliminar la mascota en la posicion
+    //eliminar DEPORTE en la posicion
     deportes.splice(deporteIndex,1);
     writeFile(FILE_NAME, deportes)
     res.redirect({'/deportes': true});
 })
 //API
-//Listar Mascotas
+//Listar DEPORTES
 app.get('/api/deportes', (req,res) =>{
     const data = readFile(FILE_NAME);
     res.json(data);
 })
 
 
+
+
 //Crear 
 app.post('/api/deportes', (req, res) => {
     try{
-    //Leer el archivo de mascotas
+    //Leer 
     const data = readFile(FILE_NAME);
 
-    //Agregar la nueva mascota
+    //Agregar 
     const newDeporte = req.body;
     newDeporte.id = uuidv4();
     console.log(newDeporte)
@@ -186,7 +187,7 @@ app.delete('/api/deportes/:id', (req, res) =>{
     //GUARDAR ID
     const id = req.params.id
     //leer contenido del archivo
-    const pets = readFile(FILE_NAME)
+    const deportes = readFile(FILE_NAME)
 
     // CON EL ID QUE RECIBE
     const deporteIndex = deportes.findIndex(deporte => deporte.id === id)
@@ -196,9 +197,107 @@ app.delete('/api/deportes/:id', (req, res) =>{
     }
     //eliminar la mascota en la posicion
     deportes.splice(deporteIndex,1);
-    writeFile(FILE_NAME, pets)
+    writeFile(FILE_NAME, deportes)
     res.json({'ok': true});
 })
+
+
+// Obtener todos los deportes
+router.get('/deportes', async (req, res) => {
+  try {
+    const deportes = await DeporteModel.findAll();
+    res.render('deportes/index', { deportes, search: req.query.search || '' });
+  } catch (error) {
+    console.error('Error al obtener deportes:', error);
+    res.status(500).json({ error: 'Error al obtener deportes' });
+  }
+});
+
+// Obtener un deporte por ID
+router.get('/deportes/:id', async (req, res) => {
+  const deporteId = req.params.id;
+  try {
+    const deporte = await DeporteModel.findByPk(deporteId);
+    if (deporte) {
+      res.render('deportes/show', { deporte });
+    } else {
+      res.status(404).json({ error: 'Deporte no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al obtener deporte por ID:', error);
+    res.status(500).json({ error: 'Error al obtener deporte por ID' });
+  }
+});
+
+// Crear un nuevo deporte (formulario)
+router.get('/deportes/create', (req, res) => {
+  res.render('deportes/create');
+});
+
+// Procesar la creación del nuevo deporte
+router.post('/deportes', async (req, res) => {
+  const nuevoDeporte = req.body;
+  try {
+    const deporteCreado = await DeporteModel.create(nuevoDeporte);
+    res.redirect('/deportes');
+  } catch (error) {
+    console.error('Error al crear deporte:', error);
+    res.status(500).json({ error: 'Error al crear deporte' });
+  }
+});
+
+// Actualizar un deporte por ID (formulario)
+router.get('/deportes/:id/edit', async (req, res) => {
+  const deporteId = req.params.id;
+  try {
+    const deporte = await DeporteModel.findByPk(deporteId);
+    if (deporte) {
+      res.render('deportes/edit', { deporte });
+    } else {
+      res.status(404).json({ error: 'Deporte no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al obtener deporte por ID:', error);
+    res.status(500).json({ error: 'Error al obtener deporte por ID' });
+  }
+});
+
+// Procesar la actualización del deporte
+router.put('/deportes/:id', async (req, res) => {
+  const deporteId = req.params.id;
+  const datosActualizados = req.body;
+  try {
+    const deporte = await DeporteModel.findByPk(deporteId);
+    if (deporte) {
+      await deporte.update(datosActualizados);
+      res.redirect(`/deportes/${deporteId}`);
+    } else {
+      res.status(404).json({ error: 'Deporte no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al actualizar deporte por ID:', error);
+    res.status(500).json({ error: 'Error al actualizar deporte por ID' });
+  }
+});
+
+// Eliminar un deporte por ID
+router.delete('/deportes/:id', async (req, res) => {
+  const deporteId = req.params.id;
+  try {
+    const deporte = await DeporteModel.findByPk(deporteId);
+    if (deporte) {
+      await deporte.destroy();
+      res.redirect('/deportes');
+    } else {
+      res.status(404).json({ error: 'Deporte no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al eliminar deporte por ID:', error);
+    res.status(500).json({ error: 'Error al eliminar deporte por ID' });
+  }
+});
+
+module.exports = router;
 
 
 
