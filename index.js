@@ -59,44 +59,6 @@ app.get('/api/deportes', (req, res) => {
         res.json(data);
     }
 });
-
-// punto dos parcial 
-
-
-
-
-
-// DESCARGAR PDF 
-
-app.get('/generar-pdf/:id', (req, res) => {
-    const id = req.params.id;
-    // Lógica para obtener los detalles del registro con el ID proporcionado
-
-    // Crear el contenido del PDF
-    const documentDefinition = {
-        content: [
-            { text: 'Detalle del Registro', style: 'header' },
-            // Agregar aquí los detalles del registro
-        ],
-        styles: {
-            header: {
-                fontSize: 18,
-                bold: true,
-            },
-        },
-    };
-
-    const pdfDoc = pdfMake.createPdf(documentDefinition);
-
-    // Generar el PDF y enviarlo como respuesta
-    pdfDoc.getBuffer((buffer) => {
-        res.writeHead(200, {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': `attachment; filename=registro-${id}.pdf`,
-        });
-        res.end(buffer);
-    });
-});
 //WEB LISTAR Md
 app.get('/deportes', (req, res) =>{
     const data = readFile(FILE_NAME);

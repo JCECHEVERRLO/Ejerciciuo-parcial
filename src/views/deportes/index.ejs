@@ -19,21 +19,17 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">jugadores</th>
+      <th>Nombre del Deporte</th>
+      <th>Número de Jugadores</th>
+      <!-- Agrega más columnas según sea necesario -->
+    </tr>
+  </thead>
+  <tbody>
+    <% deportes.forEach(deporte => { %>
                         
-                       
-                        </th>
-
-                    </thead>
-                    <tbody>
-                      <% deportes.forEach(deporte => { %>
-                        
-                      <tr>
-                        <th scope="row"><%= deporte.id %></th>
-                        <td><%= deporte.name %></td>
-                        <td><%= deporte.jugadores %></td>
+      <tr>
+        <td><%= deporte.name %></td>
+        <td><%= deporte.jugadores %></td>
                        
                       </tr>
                       <% }) %>
@@ -80,28 +76,6 @@
         <label for="filtro">Filtrar por ID:</label>
         <input type="text" id="filtro" name="id" class="form-control" placeholder="ID a filtrar">
       </div>
-      <button type="submit" class="btn btn-primary ml-2">Filtrar</button>
-    </form>
-  
-    <!-- Mostrar la lista de registros aquí -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <!-- Agrega más columnas si es necesario -->
-        </tr>
-      </thead>
-      <tbody>
-        <% deportes.forEach(deporte => { %>
-          <tr>
-            <td><%= deporte.id %></td>
-            <td><%= deporte.nombre %></td>
-            <!-- Agrega más columnas si es necesario -->
-          </tr>
-        <% }); %>
-      </tbody>
-    </table>
   </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
